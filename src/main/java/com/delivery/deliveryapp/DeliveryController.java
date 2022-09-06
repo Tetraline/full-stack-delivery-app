@@ -1,35 +1,31 @@
 package com.delivery.deliveryapp;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class DeliveryController {
+    List<Seller> sellers = new ArrayList<>();
 
-    @GetMapping("/welcome")
-    public Map<String, String> getSeller() {
-        HashMap<String, String> seller = new HashMap<>();
-        seller.put("name", "Pizza Place");
-        seller.put("lon", "104.916113");
-        seller.put("lat", "11.61538");
-        seller.put("ID", "1");
-        return seller;
-    }
+    //@GetMapping("/welcome")
+    //public Seller getSeller() {
+    //    Seller s = new Seller(1, 11.61538, 104.916113, "Pizza Place");
+    //    return s;
+    //}
 
     @GetMapping("/location/")
-    public List<Map<String, String>> getSellers(@RequestParam float lat, @RequestParam float lon) {
-        List<Map<String, String>> sellers = new ArrayList<>();
-        sellers.add(getSeller());
-        sellers.add(getSeller());
-        sellers.add(getSeller());
-        return sellers;
+    public ResponseEntity getSellers(@RequestParam float lat, @RequestParam float lon, @RequestParam("category") SellerCategory category) {
+        System.out.println(category);
+        return ResponseEntity.status(HttpStatus.OK).body(sellers);
     }
 
+    @PostMapping("/addSeller")
+    public ResponseEntity addSeller(@RequestBody Seller seller) {
+        sellers.add(seller);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    }
 }
