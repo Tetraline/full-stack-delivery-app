@@ -16,6 +16,14 @@ public class Seller {
         this.category = category;
     }
 
+    public SellerCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(SellerCategory category) {
+        this.category = category;
+    }
+
     public int getId() {
         return id;
     }

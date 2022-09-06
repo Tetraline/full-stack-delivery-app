@@ -6,12 +6,14 @@ import "./App.css";
 import { useState, useEffect } from "react";
 
 function App() {
-  const [userLocation, setUserLocation] = useState({
+  const defaultLocation = {
     lat: "none",
     lng: "none",
-  });
+  };
+  const [userLocation, setUserLocation] = useState(defaultLocation);
+  const [sellers, setSellers] = useState([]);
 
-  const getSellers = async (userLocation) => {
+  const getSellersAndDisplay = async (userLocation) => {
     const p = {};
     p.lat = Number(userLocation.lat);
     p.lng = Number(userLocation.lng);
@@ -20,15 +22,13 @@ function App() {
       .map(([key, value]) => `${key}=${value}`)
       .join("&");
     const url = "http://localhost:8080/location/?" + params;
-    console.log(url);
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data);
+    setSellers(data);
   };
 
   useEffect(() => {
-    // Perform the search
-    getSellers(userLocation);
+    getSellersAndDisplay(userLocation);
   }, [userLocation]);
 
   return (
@@ -45,7 +45,7 @@ function App() {
       <h2>Results</h2>
       <h3>{userLocation.lat}</h3>
       <h3>{userLocation.lng}</h3>
-      <SellerList />
+      <SellerList sellers={sellers} />
     </>
   );
 }
