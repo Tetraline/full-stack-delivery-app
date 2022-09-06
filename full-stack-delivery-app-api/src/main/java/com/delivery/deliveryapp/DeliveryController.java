@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class DeliveryController {
     List<Seller> sellers = new ArrayList<>();
@@ -18,8 +19,10 @@ public class DeliveryController {
     //}
 
     @GetMapping("/location/")
-    public ResponseEntity getSellers(@RequestParam float lat, @RequestParam float lon, @RequestParam("category") SellerCategory category) {
+    public ResponseEntity getSellers(@RequestParam float lat, @RequestParam float lng, @RequestParam("category") SellerCategory category) {
         System.out.println(category);
+        System.out.println(lat);
+        System.out.println(lng);
         return ResponseEntity.status(HttpStatus.OK).body(sellers);
     }
 

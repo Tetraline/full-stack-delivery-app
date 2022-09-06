@@ -1,0 +1,12 @@
+.leaflet-container {
+  width: 320px;
+  height: 320px;
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.leaflet-pane {
+  z-index: -1 !important;
+}

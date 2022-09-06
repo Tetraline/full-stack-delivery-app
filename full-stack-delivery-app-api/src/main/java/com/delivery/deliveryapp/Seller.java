@@ -3,15 +3,15 @@ package com.delivery.deliveryapp;
 public class Seller {
     private int id;
     private double lat;
-    private double lon;
+    private double lng;
     private String name;
 
     private SellerCategory category;
 
-    public Seller(int id, double lat, double lon, String name, SellerCategory category) {
+    public Seller(int id, double lat, double lng, String name, SellerCategory category) {
         this.id = id;
         this.lat = lat;
-        this.lon = lon;
+        this.lng = lng;
         this.name = name;
         this.category = category;
     }
@@ -32,12 +32,12 @@ public class Seller {
         this.lat = lat;
     }
 
-    public double getLon() {
-        return lon;
+    public double getLng() {
+        return lng;
     }
 
-    public void setLon(double lon) {
-        this.lon = lon;
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 
     public String getName() {

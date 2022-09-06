@@ -1,0 +1,8 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  &__item {
+    height: 12vw;
+    margin: 20px;
+  }
+}
