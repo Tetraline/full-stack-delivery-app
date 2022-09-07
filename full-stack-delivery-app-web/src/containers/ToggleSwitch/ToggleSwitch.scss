@@ -1,0 +1,15 @@
+.toggle-switch {
+  border: 0;
+  background-color: lightblue;
+  border-radius: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin: 20px;
+  transition: 1s;
+  font-weight: bolder;
+  height: 40px;
+}
+
+.toggle-switch.spin {
+  transform: rotate(360deg);
+}

@@ -5,10 +5,24 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  > .search-button {
+    display: none;
+  }
 }
 
-.map.selecting > .leaflet-container {
-  height: 320px;
+.map.selecting {
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  background-color: white;
+
+  > .leaflet-container {
+    height: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .map .leaflet-control-zoom,

@@ -1,13 +1,6 @@
-import { useEffect } from "react";
-import { useMapEvents, useMap } from "react-leaflet";
+import { useMapEvents } from "react-leaflet";
 
-const MapClickListener = ({ handleMapClick, setMap }) => {
-  const map = useMap();
-  //Pass up map object for Map.jsx to use
-  useEffect(() => {
-    setMap(map);
-  }, [map, setMap]);
-
+const MapClickListener = ({ handleMapClick }) => {
   useMapEvents({
     click() {
       handleMapClick();

@@ -4,6 +4,7 @@ import Map from "./containers/Map/Map";
 import SellerList from "./containers/SellerList/SellerList";
 import "./App.css";
 import { useState, useEffect } from "react";
+import ToggleSwitch from "./containers/ToggleSwitch/ToggleSwitch";
 
 function App() {
   const defaultLocation = {
@@ -21,15 +22,20 @@ function App() {
     const params = Object.entries(p)
       .map(([key, value]) => `${key}=${value}`)
       .join("&");
-    const url = "http://localhost:8080/location/?" + params;
-    const res = await fetch(url);
-    const data = await res.json();
-    setSellers(data);
+    try {
+      const url = "http://localhost:8080/location/?" + params;
+      const res = await fetch(url);
+      const data = await res.json();
+      setSellers(data);
+    } catch (err) {
+      const data = [{ name: "connection error" }];
+      setSellers(data);
+    }
   };
 
-  useEffect(() => {
-    getSellersAndDisplay(userLocation);
-  }, [userLocation]);
+  //useEffect(() => {
+  //  getSellersAndDisplay(userLocation);
+  //}, [userLocation]);
 
   return (
     <>
