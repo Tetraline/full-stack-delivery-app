@@ -1,5 +1,6 @@
 package com.delivery.deliveryapp;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,8 @@ import java.util.Map;
 @CrossOrigin
 @RestController
 public class DeliveryController {
-    List<Seller> sellers = new ArrayList<>();
+    @Autowired
+    SellerRepository sellerRepository;
 
     //@GetMapping("/welcome")
     //public Seller getSeller() {
@@ -37,7 +39,7 @@ public class DeliveryController {
     public ResponseEntity getSellers(@RequestParam float lat, @RequestParam float lng,
                                      @RequestParam("category") SellerCategory category) {
         List<HashMap<String, String>> responseSellers = new ArrayList<>();
-        for (Seller s : sellers) {
+        for (Seller s : sellerRepository.findAll()) {
             HashMap<String, String> map = new HashMap<>();
             map.put("id", String.valueOf(s.getId()));
             map.put("name", s.getName());
@@ -49,13 +51,12 @@ public class DeliveryController {
         System.out.println(category);
         System.out.println(lat);
         System.out.println(lng);
-        System.out.println(sellers);
         return ResponseEntity.status(HttpStatus.OK).body(responseSellers);
     }
 
     @PostMapping("/addSeller")
     public ResponseEntity addSeller(@RequestBody Seller seller) {
-        sellers.add(seller);
+        sellerRepository.save(seller);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 }
