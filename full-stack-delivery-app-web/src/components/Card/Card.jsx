@@ -5,6 +5,7 @@ const Card = ({ seller }) => {
       <h2>{seller.name}</h2>
       <h3>{seller.category}</h3>
       <h4>{seller.distance}</h4>
+      <h4>{seller.time}</h4>
     </div>
   );
 };

@@ -5,11 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -40,12 +38,16 @@ public class DeliveryController {
                                      @RequestParam("category") SellerCategory category) {
         List<HashMap<String, String>> responseSellers = new ArrayList<>();
         for (Seller s : sellerRepository.findAll()) {
-            HashMap<String, String> map = new HashMap<>();
-            map.put("id", String.valueOf(s.getId()));
-            map.put("name", s.getName());
-            map.put("category", String.valueOf(s.getCategory()));
-            map.put("distance", String.valueOf(Math.floor(10 * Math.random())));
-            responseSellers.add(map);
+            double distance = calculateDistance(lat, lng, s);
+            if (distance < 10) {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("id", String.valueOf(s.getId()));
+                map.put("name", s.getName());
+                map.put("category", String.valueOf(s.getCategory()));
+                map.put("distance", String.format("%.0f", distance) + "km");
+                map.put("time", calculateDeliveryTime(distance));
+                responseSellers.add(map);
+            }
         }
 
         System.out.println(category);
@@ -56,7 +58,42 @@ public class DeliveryController {
 
     @PostMapping("/addSeller")
     public ResponseEntity addSeller(@RequestBody Seller seller) {
+        // TODO: Figure out how to catch exceptions here?
         sellerRepository.save(seller);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+        String responseJSON = "{\"name\":\"" + seller.getName() + "\"}";
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseJSON);
+    }
+
+    private int calculateDistance(float lat, float lng, Seller s) {
+        // lat2 = s.getLat == sLatRadi
+        // lat1 = lat == latRadi
+        // lon2 = s.getLng
+        // lon1 = lon
+        // modified from https://www.geeksforgeeks.org/haversine-formula-to-find-distance-between-two-points-on-a-sphere/
+        double dLat = Math.toRadians(s.getLat() - lat);
+        double dLng = Math.toRadians(s.getLng() - lng);
+
+        // convert to radians
+        double latRadi = Math.toRadians(lat);
+        double sLatRadi = Math.toRadians(s.getLat());
+
+        // apply formulae
+        double a = Math.pow(Math.sin(dLat / 2), 2) +
+                Math.pow(Math.sin(dLng / 2), 2) *
+                        Math.cos(latRadi) *
+                        Math.cos(sLatRadi);
+        double rad = 6371;
+        double c = 2 * Math.asin(Math.sqrt(a));
+        return (int) Math.round(rad * c);
+    }
+
+    private String calculateDeliveryTime(double distance) {
+        // Delivery cyclists move at about 0.5 km per minute
+        double speed = 0.5; // km per minute
+        double time = distance / speed; // minutes
+        time = 5 * Math.round(time / 5);
+        // Restaurants take about 10 minutes to cook food
+        time = time + 10;
+        return (int) time + "-" + (int) (time + 5) + "min";
     }
 }

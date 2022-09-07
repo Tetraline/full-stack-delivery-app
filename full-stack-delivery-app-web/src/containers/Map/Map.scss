@@ -1,7 +1,8 @@
 .map > .leaflet-container {
-  width: 320px;
+  width: 90vw;
   height: 100px;
   z-index: 0;
+  margin: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,7 +20,7 @@
   background-color: white;
 
   > .leaflet-container {
-    height: 320px;
+    height: 90vw;
     margin-left: auto;
     margin-right: auto;
     > .search-button {

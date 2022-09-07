@@ -2,7 +2,6 @@ import NavBar from "../NavBar/NavBar";
 import Map from "../Map/Map";
 import SellerList from "../SellerList/SellerList";
 import { useState, useEffect } from "react";
-import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 
 const CustomerApp = () => {
   const defaultLocation = {
@@ -31,9 +30,9 @@ const CustomerApp = () => {
     }
   };
 
-  //useEffect(() => {
-  //  getSellersAndDisplay(userLocation);
-  //}, [userLocation]);
+  useEffect(() => {
+    getSellersAndDisplay(userLocation);
+  }, [userLocation]);
 
   return (
     <>
@@ -44,11 +43,7 @@ const CustomerApp = () => {
         crossOrigin=""
       />
       <NavBar />
-      <h2>Select your location</h2>
       <Map setUserLocation={setUserLocation} dave="married" />
-      <h2>Results</h2>
-      <h3>{userLocation.lat}</h3>
-      <h3>{userLocation.lng}</h3>
       <SellerList sellers={sellers} />
     </>
   );

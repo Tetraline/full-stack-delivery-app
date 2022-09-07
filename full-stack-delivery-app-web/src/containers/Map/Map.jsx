@@ -1,6 +1,6 @@
 import "./Map.scss";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import { useState, useEffect } from "react";
+import { MapContainer, TileLayer } from "react-leaflet";
+import { useState } from "react";
 import UserMarker from "../../components/UserMarker/UserMarker";
 import SearchButton from "../../components/SearchButton/SearchButton";
 import MapClickListener from "../../components/MapClickListener/MapClickListener";
