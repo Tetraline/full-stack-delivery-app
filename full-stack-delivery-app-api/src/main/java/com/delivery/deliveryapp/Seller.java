@@ -16,12 +16,23 @@ public class Seller {
 
     private SellerCategory category;
 
-    public Seller(int id, double lat, double lng, String name, SellerCategory category) {
+    private String description;
+
+    public Seller(int id, double lat, double lng, String name, SellerCategory category, String description) {
         this.id = id;
         this.lat = lat;
         this.lng = lng;
         this.name = name;
         this.category = category;
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public SellerCategory getCategory() {
