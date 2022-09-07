@@ -25,6 +25,8 @@ const SellerSignUp = () => {
     const data = await response.json();
     if (response.ok) {
       setUserMessage(`${data.name} has been added successfully`);
+    } else {
+      setUserMessage(`Error code: ${response.status}. Not added to database.`);
     }
   };
   return (
