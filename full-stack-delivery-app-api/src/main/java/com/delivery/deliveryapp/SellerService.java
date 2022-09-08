@@ -1,40 +1,28 @@
 package com.delivery.deliveryapp;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@CrossOrigin
-@RestController
-public class DeliveryController {
+@Service
+public class SellerService {
     @Autowired
     SellerRepository sellerRepository;
 
-    //@GetMapping("/welcome")
-    //public Seller getSeller() {
-    //    Seller s = new Seller(1, 11.61538, 104.916113, "Pizza Place");
-    //    return s;
-    //}
+    public List<Seller> getAll() {
+        List<Seller> sellers = sellerRepository.findAll();
+        return sellers;
+    }
 
-    //public static Map<String, Object> parameters(Object obj) {
-    //    Map<String, Object> map = new HashMap<>();
-    //    for (Field field : obj.getClass().getDeclaredFields()) {
-    //        //field.setAccessible(true)
-    //        try {
-    //            map.put(field.getName(), field.get(obj));
-    //        } catch (Exception e) {]
-    //        }
-    //        return map;
-    //    }
-    //}
-
-    @GetMapping("/location/")
-    public ResponseEntity getSellers(@RequestParam float lat, @RequestParam float lng, @RequestParam("category") SellerCategory category) {
-        List<HashMap<String, String>> responseSellers = new ArrayList<>();
-        for (Seller s : sellerRepository.findAll()) {
+    public List<HashMap<String, String>> sellersNearLocation(float lat, float lng, SellerCategory category) {
+        List<HashMap<String, String>> sellers = new ArrayList<>();
+        for (Seller s : this.getAll()) {
             double distance = calculateDistance(lat, lng, s);
             if (distance < 10) {
                 HashMap<String, String> map = new HashMap<>();
@@ -42,19 +30,28 @@ public class DeliveryController {
                 map.put("description", String.valueOf(s.getDescription()));
                 map.put("distance", String.format("%.0f", distance) + " km");
                 map.put("time", calculateDeliveryTime(distance));
-                responseSellers.add(map);
+                sellers.add(map);
             }
         }
-        responseSellers.sort(Comparator.comparing((HashMap<String, String> s) -> Integer.parseInt(s.get("distance").split(" ")[0])));
-        return ResponseEntity.status(HttpStatus.OK).body(responseSellers);
+        sellers.sort(Comparator.comparing((HashMap<String, String> s) -> Integer.parseInt(s.get("distance").split(" ")[0])));
+        return sellers;
     }
 
-    @PostMapping("/addSeller")
-    public ResponseEntity addSeller(@RequestBody Seller seller) {
-        // TODO: Figure out how to catch exceptions here?
-        sellerRepository.save(seller);
-        String responseJSON = "{\"name\":\"" + seller.getName() + "\"}";
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseJSON);
+    public String addSeller(Seller s) throws Exception {
+        if (s.getName() == null) {
+            throw new Exception("Sellers must have a name");
+        }
+        if (s.getName().length() < 3) {
+            throw new Exception("Sellers must have a name longer than 2");
+        }
+        if (s.getLat() == 0) {
+            throw new Exception("Lat must be provided");
+        }
+        if (s.getLng() == 0) {
+            throw new Exception("Lng must be provided");
+        }
+        sellerRepository.save(s);
+        return s.getName() + " successfully added";
     }
 
     private int calculateDistance(float lat, float lng, Seller s) {
