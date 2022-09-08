@@ -1,13 +1,13 @@
-//import "./SellerSignUp.scss";
+import "./SellerSignUp.scss";
 import { useState } from "react";
 
 const SellerSignUp = () => {
   const [userMessage, setUserMessage] = useState("");
   const keys = ["lat", "lng", "name", "category", "description"];
   const innerFormJSX = keys.map((key) => (
-    <div key={key}>
+    <div key={key} className="form-group">
       <label htmlFor={key}>{key}</label>
-      <input name={key} id={key}></input>
+      <input name={key} id={key} className="form-control"></input>
     </div>
   ));
   const handleSubmit = async (e) => {
@@ -33,8 +33,13 @@ const SellerSignUp = () => {
   };
   return (
     <form>
-      <h1>Seller sign up form</h1>
-      <p>Fill in the following details and we will add you to our platform.</p>
+      <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+        integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+        crossOrigin="anonymous"
+      ></link>
+      <h1>Seller sign up</h1>
       {innerFormJSX}
       <input onClick={handleSubmit} type="submit" value="Submit" />
       <h2>{userMessage}</h2>
