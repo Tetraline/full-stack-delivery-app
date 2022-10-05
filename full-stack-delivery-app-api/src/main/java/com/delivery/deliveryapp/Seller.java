@@ -13,9 +13,7 @@ public class Seller {
     private double lat;
     private double lng;
     private String name;
-
     private SellerCategory category;
-
     private String description;
 
     public Seller(){
